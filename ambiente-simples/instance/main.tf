@@ -5,11 +5,14 @@ variable "instance_type" {
 }
 variable "instance_network" {}
 variable "instance_subnet" {}
+variable "instance_network_tag" {}
 
 resource "google_compute_instance" "vm_instance" {
   name         = var.instance_name
   zone         = var.instance_zone
   machine_type = var.instance_type
+  tags = [var.instance_network_tag]
+
   boot_disk {
     initialize_params {
       image = "debian-11-bullseye-v20220920"
