@@ -14,7 +14,7 @@ resource "google_compute_firewall" "mynetwork-allow-http" {
     ports    = ["80", "8080"]
   }
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["web"]
+  target_tags   = ["web"]
 }
 
 resource "google_compute_firewall" "mynetwork-allow-database" {
@@ -41,15 +41,17 @@ resource "google_compute_subnetwork" "subnet-southamerica-east1" {
 module "backend-vm" {
   source           = "./instance"
   instance_name    = "backend-vm"
-  instance_zone    = "southamerica-east1"
+  instance_zone    = "southamerica-east1-a"
   instance_network = google_compute_network.mynetwork.self_link
+  instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
 }
 
 
 module "database-vm" {
   source           = "./instance"
   instance_name    = "database-vm"
-  instance_zone    = "southamerica-east1"
+  instance_zone    = "southamerica-east1-a"
   instance_network = google_compute_network.mynetwork.self_link
+  instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
 }
 
