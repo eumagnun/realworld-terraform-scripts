@@ -6,6 +6,9 @@ variable "instance_type" {
 variable "instance_network" {}
 variable "instance_subnet" {}
 variable "instance_network_tag" {}
+variable "external_ip" {
+  default = "false"
+}
 
 resource "google_compute_instance" "vm_instance" {
   name         = var.instance_name
@@ -24,9 +27,15 @@ resource "google_compute_instance" "vm_instance" {
   network_interface {
     network    = var.instance_network
     subnetwork = var.instance_subnet
-    access_config {
-      # Allocate a one-to-one NAT IP to the instance
+    
+     #access_config will add in here
+    dynamic "access_config" {
+       for_each = external_ip == false ? [] : [1]
+       content {
+          access_config {
+            # Allocate a one-to-one NAT IP to the instance
+          }
+       }
     }
-
   }
 }
