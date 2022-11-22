@@ -30,8 +30,8 @@ resource "google_compute_firewall" "mynetwork-allow-database" {
   source_tags = ["web"]
 }
 
-resource "google_compute_firewall" "mynetwork-allow-ssh-from-cloudshell" {
-  name    = "mynetwork-allow-ssh-from-cloudshell"
+resource "google_compute_firewall" "mynetwork-allow-ssh-from-build-vm" {
+  name    = "mynetwork-allow-ssh-from-build-vm"
   network = google_compute_network.mynetwork.self_link
 
   allow {
@@ -39,7 +39,7 @@ resource "google_compute_firewall" "mynetwork-allow-ssh-from-cloudshell" {
     ports    = ["22"]
   }
 
-  source_ranges = ["35.235.240.0/20"]
+  source_tags = ["build"]
 }
 
 resource "google_compute_subnetwork" "subnet-southamerica-east1" {
@@ -59,7 +59,6 @@ module "backend-vm" {
   instance_network_tag = "web"
 }
 
-
 module "database-vm" {
   source           = "./instance"
   instance_name    = "database-vm"
@@ -69,3 +68,20 @@ module "database-vm" {
   instance_network_tag = "database"
 }
 
+module "frontend-vm" {
+  source           = "./instance"
+  instance_name    = "frontend-vm"
+  instance_zone    = "southamerica-east1-a"
+  instance_network = google_compute_network.mynetwork.self_link
+  instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
+  instance_network_tag = "web"
+}
+  
+module "build-vm" {
+  source           = "./instance"
+  instance_name    = "build-vm"
+  instance_zone    = "southamerica-east1-a"
+  instance_network = google_compute_network.mynetwork.self_link
+  instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
+  instance_network_tag = "build"
+}
