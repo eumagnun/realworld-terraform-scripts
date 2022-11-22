@@ -42,6 +42,18 @@ resource "google_compute_firewall" "mynetwork-allow-ssh-from-build-vm" {
   source_tags = ["build"]
 }
 
+resource "google_compute_firewall" "mynetwork-allow-ssh-from-cloudshell" {
+  name    = "mynetwork-allow-ssh-from-cloudshell"
+  network = google_compute_network.mynetwork.self_link
+
+  allow {
+    protocol = "tcp"
+    ports    = ["22"]
+  }
+
+  source_ranges = ["35.235.240.0/20"]
+}
+
 resource "google_compute_subnetwork" "subnet-southamerica-east1" {
   name          = "subnet-southamerica-east1"
   ip_cidr_range = "10.0.0.0/24"
