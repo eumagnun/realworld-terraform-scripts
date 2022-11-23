@@ -103,8 +103,8 @@ resource "google_storage_bucket" "frontend-static-site" {
   }
 }
 
-resource "google_sql_database_instance" "main_application" {
-  name             = "main_application"
+resource "google_sql_database_instance" "main" {
+  name             = "main"
   database_version = "POSTGRES_14"
   region           = "southamerica-east1"
 
