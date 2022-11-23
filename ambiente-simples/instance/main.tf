@@ -6,8 +6,8 @@ variable "instance_type" {
 variable "instance_network" {}
 variable "instance_subnet" {}
 variable "instance_network_tag" {}
-variable "external_ip" {
-  default = "false"
+variable "need_external_ip" {
+  default = 0
 }
 
 resource "google_compute_instance" "vm_instance" {
@@ -28,14 +28,8 @@ resource "google_compute_instance" "vm_instance" {
     network    = var.instance_network
     subnetwork = var.instance_subnet
     
-     #access_config will add in here
-    dynamic "access_config" {
-       for_each = external_ip == false ? [] : [1]
-       content {
-          access_config {
-            # Allocate a one-to-one NAT IP to the instance
-          }
-       }
+    access_config {
+      count = var.need_external_ip
     }
   }
 }
