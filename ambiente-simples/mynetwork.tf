@@ -69,6 +69,7 @@ module "backend-vm" {
   instance_network = google_compute_network.mynetwork.self_link
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "web"
+  need_external_ip = true
 }
 
 module "database-vm" {
@@ -87,6 +88,7 @@ module "frontend-vm" {
   instance_network = google_compute_network.mynetwork.self_link
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "web"
+  need_external_ip = true
 }
   
 module "build-vm" {
