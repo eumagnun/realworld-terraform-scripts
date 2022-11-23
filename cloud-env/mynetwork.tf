@@ -11,7 +11,7 @@ resource "google_compute_firewall" "mynetwork-allow-http" {
 
   allow {
     protocol = "tcp"
-    ports    = ["80", "8080"]
+    ports    = ["8080"]
   }
   source_ranges = ["0.0.0.0/0"]
   target_tags   = ["web"]
@@ -83,10 +83,25 @@ resource "google_compute_router_nat" "my-router-nat" {
     filter = "ERRORS_ONLY"
   }
 }
-<<<<<<< HEAD:cloud-env/mynetwork.tf
 
-=======
->>>>>>> 2dfb9ba2304eee6968885ff96b7c9e7f37260d6e:ambiente-simples/mynetwork.tf
+resource "google_storage_bucket" "frontend-static-site" {
+  name          = "frontend-static-site"
+  location      = "SOUTHAMERICA-EAST1"
+  force_destroy = true
+
+  uniform_bucket_level_access = true
+
+  website {
+    main_page_suffix = "index.html"
+    not_found_page   = "404.html"
+  }
+  cors {
+    origin          = ["http://image-store.com"]
+    method          = ["GET", "HEAD", "PUT", "POST", "DELETE", "OPTIONS"]
+    response_header = ["*"]
+    max_age_seconds = 3600
+  }
+}
 
 module "backend-vm" {
   source           = "./instance"
@@ -106,17 +121,7 @@ module "database-vm" {
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "database"
 }
-
-module "frontend-vm" {
-  source           = "./instance"
-  instance_name    = "frontend-vm"
-  instance_zone    = "southamerica-east1-a"
-  instance_network = google_compute_network.mynetwork.self_link
-  instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
-  instance_network_tag = "web"
-  need_external_ip = true
-}
-  
+ 
 module "build-vm" {
   source           = "./instance"
   instance_name    = "build-vm"
