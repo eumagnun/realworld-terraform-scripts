@@ -103,6 +103,18 @@ resource "google_storage_bucket" "frontend-static-site" {
   }
 }
 
+resource "google_sql_database_instance" "main_application" {
+  name             = "main_application"
+  database_version = "POSTGRES_14"
+  region           = "southamerica-east1"
+
+  settings {
+    # Second-generation instance tiers are based on the machine
+    # type. See argument reference below.
+    tier = "db-f1-micro"
+  }
+}
+
 module "backend-vm" {
   source           = "./instance"
   instance_name    = "backend-vm"
