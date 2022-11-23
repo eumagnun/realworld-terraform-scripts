@@ -84,6 +84,7 @@ resource "google_compute_router_nat" "my-router-nat" {
   }
 }
 
+
 module "backend-vm" {
   source           = "./instance"
   instance_name    = "backend-vm"
