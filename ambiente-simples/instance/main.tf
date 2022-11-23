@@ -7,7 +7,7 @@ variable "instance_network" {}
 variable "instance_subnet" {}
 variable "instance_network_tag" {}
 variable "need_external_ip" {
-  default = 0
+  default = false
 }
 
 resource "google_compute_instance" "vm_instance" {
@@ -28,8 +28,9 @@ resource "google_compute_instance" "vm_instance" {
     network    = var.instance_network
     subnetwork = var.instance_subnet
     
-    access_config {
-      count = var.need_external_ip
+    dynamic "access_config" {
+      for_each = var.need_external_ip ? [""] : []
+      content {}
     }
   }
 }
