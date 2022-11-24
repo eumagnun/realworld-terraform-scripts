@@ -1,4 +1,4 @@
-# terraform-scripts
+# Terraform-scripts for migration demo purpose
 
 * Warning: if you receive the error  "Error 412: Constraint constraints/compute.vmExternalIpAccess violated for project", change the organization policy "vmExternalIpAccess" to "Google-managed default"
 
