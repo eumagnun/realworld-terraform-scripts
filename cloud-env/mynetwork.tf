@@ -43,7 +43,7 @@ resource "google_compute_firewall" "mynetwork1-allow-ssh-from-cloudshell" {
 
 resource "google_compute_subnetwork" "subnet-southamerica-east1" {
   name          = "subnet-southamerica-east1"
-  ip_cidr_range = "10.0.0.0/24"
+  ip_cidr_range = "10.2.0.0/24"
   region        = "southamerica-east1"
   network       = google_compute_network.mynetwork1.id
 }
