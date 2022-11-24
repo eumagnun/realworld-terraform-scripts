@@ -17,8 +17,6 @@ resource "google_compute_firewall" "mynetwork1-allow-http" {
   target_tags   = ["web"]
 }
 
-
-
 resource "google_compute_firewall" "mynetwork1-allow-ssh-from-build-vm" {
   name    = "mynetwork1-allow-ssh-from-build-vm"
   network = google_compute_network.mynetwork1.self_link
@@ -137,6 +135,7 @@ resource "google_compute_ha_vpn_gateway" "ha_gateway1" {
 
 resource "google_compute_router" "router1" {
   name    = "ha-vpn-router1"
+  region  = "southamerica-east1"
   network = google_compute_network.mynetwork1.name
   bgp {
     asn = 64514
