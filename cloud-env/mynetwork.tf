@@ -146,6 +146,7 @@ resource "google_compute_vpn_tunnel" "tunnel1" {
   name                  = "ha-vpn-tunnel1"
   region                = "southamerica-east1"
   vpn_gateway           = google_compute_ha_vpn_gateway.ha_gateway1.id
+  peer_gcp_gateway      = 0 #google_compute_ha_vpn_gateway.ha_gateway2.id
   shared_secret         = "a secret message"
   router                = google_compute_router.router1.id
   vpn_gateway_interface = 0
@@ -155,6 +156,7 @@ resource "google_compute_vpn_tunnel" "tunnel2" {
   name                  = "ha-vpn-tunnel2"
   region                = "southamerica-east1"
   vpn_gateway           = google_compute_ha_vpn_gateway.ha_gateway1.id
+  peer_gcp_gateway      = 0 #google_compute_ha_vpn_gateway.ha_gateway2.id
   shared_secret         = "a secret message"
   router                = google_compute_router.router1.id
   vpn_gateway_interface = 1
