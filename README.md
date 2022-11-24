@@ -22,3 +22,6 @@ terraform init
 ````
 terraform apply
 ````
+
+** Environment diagram:
+![alt text](https://raw.githubusercontent.com/eumagnun/realworld-terraform-scripts/main/on-prem-env.png)
