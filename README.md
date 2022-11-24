@@ -8,9 +8,9 @@
 git clone https://github.com/eumagnun/realworld-terraform-scripts.git
 ````
 
-* change dir
+* change dir to the desired env [cloud-env or on-prem-env]
 ````
-cd realworld-terraform-scripts/ambiente-simples
+cd realworld-terraform-scripts/DESIRED_FOLDER
 ````
 
 * init terraform
