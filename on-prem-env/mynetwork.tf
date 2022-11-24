@@ -1,6 +1,7 @@
 # Create the mynetwork network
 resource "google_compute_network" "mynetwork" {
   name                    = "mynetwork"
+  routing_mode            = "GLOBAL"
   auto_create_subnetworks = false
 }
 
@@ -122,3 +123,89 @@ module "build-vm" {
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "build"
 }
+
+#start vpn resources
+resource "google_compute_subnetwork" "network_subnet1" {
+  name          = "ha-vpn-subnet-3"
+  ip_cidr_range = "192.168.1.0/24"
+  region        = "southamerica-east1"
+  network       = google_compute_network.network.id
+}
+
+resource "google_compute_subnetwork" "network_subnet2" {
+  name          = "ha-vpn-subnet-4"
+  ip_cidr_range = "192.168.2.0/24"
+  region        = "southamerica-west1"
+  network       = google_compute_network.network.id
+}
+
+resource "google_compute_ha_vpn_gateway" "ha_gateway2" {
+  region  = "southamerica-east1"
+  name    = "ha-vpn-2"
+  network = google_compute_network.network.id
+}
+
+resource "google_compute_router" "router2" {
+  name    = "ha-vpn-router2"
+  network = google_compute_network.network.name
+  bgp {
+    asn = 64515
+  }
+}
+
+resource "google_compute_vpn_tunnel" "tunnel3" {
+  name                  = "ha-vpn-tunnel3"
+  region                = "southamerica-east1"
+  vpn_gateway           = google_compute_ha_vpn_gateway.ha_gateway2.id
+  peer_gcp_gateway      = google_compute_ha_vpn_gateway.ha_gateway1.id
+  shared_secret         = "a secret message"
+  router                = google_compute_router.router2.id
+  vpn_gateway_interface = 0
+}
+
+resource "google_compute_vpn_tunnel" "tunnel4" {
+  name                  = "ha-vpn-tunnel4"
+  region                = "southamerica-east1"
+  vpn_gateway           = google_compute_ha_vpn_gateway.ha_gateway2.id
+  peer_gcp_gateway      = google_compute_ha_vpn_gateway.ha_gateway1.id
+  shared_secret         = "a secret message"
+  router                = google_compute_router.router2.id
+  vpn_gateway_interface = 1
+}
+
+resource "google_compute_router_interface" "router2_interface1" {
+  name       = "router2-interface1"
+  router     = google_compute_router.router2.name
+  region     = "southamerica-east1"
+  ip_range   = "169.254.0.2/30"
+  vpn_tunnel = google_compute_vpn_tunnel.tunnel3.name
+}
+
+resource "google_compute_router_peer" "router2_peer1" {
+  name                      = "router2-peer1"
+  router                    = google_compute_router.router2.name
+  region                    = "southamerica-east1"
+  peer_ip_address           = "169.254.0.1"
+  peer_asn                  = 64514
+  advertised_route_priority = 100
+  interface                 = google_compute_router_interface.router2_interface1.name
+}
+
+resource "google_compute_router_interface" "router2_interface2" {
+  name       = "router2-interface2"
+  router     = google_compute_router.router2.name
+  region     = "southamerica-east1"
+  ip_range   = "169.254.1.1/30"
+  vpn_tunnel = google_compute_vpn_tunnel.tunnel4.name
+}
+
+resource "google_compute_router_peer" "router2_peer2" {
+  name                      = "router2-peer2"
+  router                    = google_compute_router.router2.name
+  region                    = "southamerica-east1"
+  peer_ip_address           = "169.254.1.2"
+  peer_asn                  = 64514
+  advertised_route_priority = 100
+  interface                 = google_compute_router_interface.router2_interface2.name
+}
+#end vpn resource
