@@ -1,6 +1,8 @@
 ## Main Goal
 * Create a simulated onpremises 3 layer application to use as base to modernization simulations
 
+### Environment diagram:
+![alt text](https://raw.githubusercontent.com/eumagnun/realworld-terraform-scripts/main/on-prem-env.png)
 
 ## 1 On-premises env creation step-by-step
 
@@ -28,10 +30,6 @@ terraform init
 ````
 terraform apply
 ````
-
-## Environment diagram:
-![alt text](https://raw.githubusercontent.com/eumagnun/realworld-terraform-scripts/main/on-prem-env.png)
-
 
 ### 1.2 - Install de Datatabase on database-vm:
 
