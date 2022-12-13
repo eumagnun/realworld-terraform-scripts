@@ -9,7 +9,9 @@ variable "instance_network_tag" {}
 variable "need_external_ip" {
   default = false
 }
-variable "template"{}
+variable "template"{
+    default = ""
+}
 
 resource "google_compute_instance" "vm_instance" {
   name         = var.instance_name
