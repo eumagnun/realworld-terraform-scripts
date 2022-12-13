@@ -94,7 +94,7 @@ module "backend-vm" {
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "web"
   need_external_ip = true
-  template = java
+  template = "java"
 }
 
 module "database-vm" {
@@ -104,7 +104,7 @@ module "database-vm" {
   instance_network = google_compute_network.mynetwork.self_link
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "database"
-  template = postgres
+  template = "postgres"
 }
 
 module "frontend-vm" {
@@ -115,7 +115,7 @@ module "frontend-vm" {
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "web"
   need_external_ip = true
-  template = angular
+  template = "angular"
 }
   
 module "build-vm" {
@@ -125,5 +125,5 @@ module "build-vm" {
   instance_network = google_compute_network.mynetwork.self_link
   instance_subnet  = google_compute_subnetwork.subnet-southamerica-east1.self_link
   instance_network_tag = "build"
-  template = build-java-angular
+  template = "build-java-angular"
 }
