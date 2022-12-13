@@ -11,12 +11,6 @@ variable "need_external_ip" {
 }
 variable "template"{}
 
-variable "startup_script" {
-  default = ""
-}
-
-var.startup_script = var.template == "database"?"asdasdasd":""
-
 resource "google_compute_instance" "vm_instance" {
   name         = var.instance_name
   zone         = var.instance_zone
@@ -32,7 +26,7 @@ resource "google_compute_instance" "vm_instance" {
     enable_secure_boot = true
   }
   
-  metadata_startup_script = var.template == "database"?file("${path.module}/scripts/deploy_db_postgres.sh"):
+  metadata_startup_script = var.template == "database"?file("${path.module}/scripts/deploy_db_postgres.sh"):[]
   
   network_interface {
     network    = var.instance_network
