@@ -77,6 +77,9 @@ sudo apt install git
 ````
 https://github.com/eumagnun/realworld-terraform-scripts
 ````
+### Now the application is ready!Just access the frontend-vm 's public IP
+
+## Working in progress from here.....
 ## 3 Let's go to the migration
 ### 3.1 Estabilish communication beetween both projects.
 * Warning:  To execute this step on the real world we can use a VPN or Interconnect. In this demo, to keep things simple,  we are going to establish a peering.
