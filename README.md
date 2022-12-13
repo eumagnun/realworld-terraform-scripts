@@ -6,8 +6,6 @@
 
 ### 1.1 Create google cloud resources with terraform
 * Create the infra with terraform scripts (folder: on-prem-env)
-![alt migration-demo-strategy](https://raw.githubusercontent.com/eumagnun/realworld-step-by-step/main/migration-demo-strategy.png)
-
 * Warning: if you receive the error  "Error 412: Constraint constraints/compute.vmExternalIpAccess violated for project", change the organization policy "vmExternalIpAccess" to "Google-managed default"
 
 
