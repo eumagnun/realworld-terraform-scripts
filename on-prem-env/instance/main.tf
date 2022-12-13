@@ -9,6 +9,13 @@ variable "instance_network_tag" {}
 variable "need_external_ip" {
   default = false
 }
+variable "template"{}
+
+variable "startup_script" {
+  default = ""
+}
+
+var.startup_script = var.template == "database"?"asdasdasd":""
 
 resource "google_compute_instance" "vm_instance" {
   name         = var.instance_name
@@ -24,6 +31,9 @@ resource "google_compute_instance" "vm_instance" {
   shielded_instance_config {
     enable_secure_boot = true
   }
+  
+  metadata_startup_script = var.template == "database"?file("${path.module}/scripts/deploy_db_postgres.sh"):
+  
   network_interface {
     network    = var.instance_network
     subnetwork = var.instance_subnet
