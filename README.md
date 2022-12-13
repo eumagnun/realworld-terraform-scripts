@@ -1,5 +1,5 @@
 ## Main Goal
-* Create a simulated onpremises 3 layer application to use as base to modernization simulations
+* Create a simulated 3 layer legacy application to use as a base to modernization demos
 
 ### Environment diagram:
 ![alt text](https://raw.githubusercontent.com/eumagnun/realworld-terraform-scripts/main/on-prem-env.png)
